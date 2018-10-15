@@ -1,0 +1,24 @@
+#+title: Threading lab Operating systems
+
+* Description
+  this lab is similar to the lab we made with processes but now it is implemented using threads. Which include the problem of shared memeory which cause problems with data races.
+
+* usage
+ you must run the code from project root as:
+#+BEGIN_SRC bash
+ python file-transfer/server.py
+#+END_SRC 
+you must run start the proxy with:
+#+BEGIN_SRC bash
+ python emphaticDemo/stammerProxy.py
+#+END_SRC 
+ followed by :
+#+BEGIN_SRC bash
+ python file-transfer/client.py
+#+END_SRC
+When a client starts, the program prompts for the type of connection you want to have with the serveri(directly or by a proxy). Use *Y* to connect directly to the server and *N*  to use the default proxy. To utilize the client the user can either enter /put/get/ <file-name> to interact with the corrsponding file.
+
+how to recieve a file from a socket
+    [[https://www.youtube.com/watch?v=1VaBy6ZSIUM][Python How To Send File From Client To Server And Vice Versa]]
+ - how to send data from a socket
+   [[https://www.youtube.com/watch?v=HrDyqtyT2yk][Part Two Tutorial On How To Send and Recieve File From Client To Server Or Vice Versa]]
