@@ -1,15 +1,16 @@
-import sys
+import sys,socket,re 
 sys.path.append('../test')
-sys,=.path.append('../emphaticDemo')
 import logSetup as log                              # my loggin module
-
-
+sys.path.append('../emphaticDemo')
+import params
+from framedSock import FramedStreamSock
+from threading import Thread
+import time
 switchesVarDefaults = (
     (('-s', '--server'), 'server', "localhost:50001"),
     (('-d', '--debug'), "debug", False), # boolean (set if present)
     (('-?', '--usage'), "usage", False), # boolean (set if present)
     )
-
 
 progname = "framedClient"
 paramMap = params.parseParams(switchesVarDefaults)
