@@ -2,6 +2,7 @@ import re
 
 class FramedStreamSock:
      sockNum = 0
+
      def __init__(self, sock, debug=False, name=None):
           self.sock, self.debug = sock, debug
           self.rbuf = b""       # receive buffer
@@ -10,15 +11,20 @@ class FramedStreamSock:
           else:                 # make default name
                self.name = "FramedStreamSock-%d" % FramedStreamSock.sockNum
                FramedStreamSock.sockNum += 1
+
      def __repr__(self):
           return self.name
+
      def sendmsg(self, payload):
+          '''sends a mesage thought a socket but it guarantees that the message is going to be sent completly.'''
           if self.debug: print("%s:framedSend: sending %d byte message" % (self, len(payload)))
           msg = str(len(payload)).encode() + b':' + payload
           while len(msg):
                nsent = self.sock.send(msg)
                msg = msg[nsent:]
+
      def receivemsg(self):
+          '''recieves a message and that a mesage that started to be sent is guaranteed to be recieved completly.'''
           state = "getLength"
           msgLength = -1
           while True:
@@ -42,6 +48,8 @@ class FramedStreamSock:
                self.rbuf += r
                if len(r) == 0:  # zero length read
                     if len(self.rbuf) != 0:
-                         print("FramedReceive: incomplete message. \n  state=%s, length=%d, self.rbuf=%s" % (state, msgLength, self.rbuf))
+                         print("FramedReceive: incomplete message. \n  state=%s, length=%d, self.rbuf=%s"
+                               % (state, msgLength, self.rbuf))
                     return None
-               if self.debug: print("%s:FramedReceive: state=%s, length=%d, self.rbuf=%s" % (self, state, msgLength, self.rbuf))
+               if self.debug: print("%s:FramedReceive: state=%s, \ length=%d, self.rbuf=%s"
+                                    % (self, state, msgLength, self.rbuf))
