@@ -5,7 +5,7 @@ sys.path.append('../../emphaticDemo')
 import params
 from framedSock import FramedStreamSock
 from fileSock import sendFile, getFile
-from threading import Thread
+from threading import Thread, Lock
 import time
 switchesVarDefaults = (
     (('-s', '--server'), 'server', "localhost:50000"),
@@ -30,10 +30,14 @@ except:
     sys.exit(1)
 
 class ClientThread(Thread):
+    
     def __init__(self, serverHost, serverPort, debug):
         Thread.__init__(self, daemon=False)
         self.serverHost, self.serverPort, self.debug = serverHost, serverPort, debug
         self.start()
+
+    lock = Lock()  # lock
+    
     def run(self):
        #check for the type of conenciton to the server
        while True:
@@ -97,12 +101,16 @@ class ClientThread(Thread):
            if (not os.path.isfile(f)) or  os.path.getsize(f) == 0:
                print('file: {} doesn\'t exits or is too small.'.format(f))
            else:
-               sendFile(f,s)  
+               self.lock.acquire()
+               sendFile(f,s)
+               self.lock.release()
        elif command == 'get':
            if os.path.isfile(f):
                print('you already have {}.'.format(f))
            else:
+               self.lock.acquire()
                getFile(f,s)
+               self.lock.release()
        else: #zero size command
            print('that\'s  not a good format')
 

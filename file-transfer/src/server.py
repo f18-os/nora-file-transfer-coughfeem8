@@ -1,5 +1,5 @@
 import sys,re,socket, time, os
-from threading import Thread
+from threading import Thread, Lock
 sys.path.append('../test')
 sys.path.append('../../emphaticDemo')
 import logSetup as log
